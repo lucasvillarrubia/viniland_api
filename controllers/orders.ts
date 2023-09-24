@@ -6,7 +6,7 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
         const userId: ObjectId = req.body.confirmedUser._id;
         const search = { user: userId };
         const orders = await Order.find(search);
-        res.json([...orders]);
+        res.json({ data: [...orders] });
 }
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
