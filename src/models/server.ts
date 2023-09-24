@@ -22,7 +22,7 @@ export class Server {
         }
 
         listen(): void {
-                this.app.listen(this.port, () => { console.log(`Corriendo en el puerto ${this.port}`) });
+                this.app.listen(this.port, () => { console.log(`Running on ${this.port} port`) });
         }
 
         middleware(): void {
