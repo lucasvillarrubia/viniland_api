@@ -3,7 +3,7 @@ import User, { IUser } from "../models/user";
 import bcryptjs from "bcryptjs";
 import randomstring from "randomstring";
 import { ROLES } from "../utils/constants";
-import { sendEmail } from "../services/mailer";
+import { sendVerificationEmail, sendConfirmationEmail } from "../services/mailer";
 import generateJWT from "../utils/generateJWT";
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -18,7 +18,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
         if (adminKey === process.env.ADMIN_KEY) { user.role = ROLES.admin }
 
         await user.save();
-        await sendEmail(email, verificationCode);
+        await sendVerificationEmail(email, verificationCode);
         res.status(201).json({ user });
 }
 
@@ -39,6 +39,7 @@ export const verifyUser = async (req: Request, res: Response): Promise<void> => 
                         return;
                 }
                 await User.findOneAndUpdate({email},{verified: true});
+                await sendConfirmationEmail(email);
                 res.status(200).json({ msg: "Usuario verificado correctamente." });
         } catch (error) {
                 console.log(error);

@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
         from: "vinilandshop@gmail.com"
 });
 
-export const sendEmail = async (to: string, code: string): Promise<void> => {
+export const sendVerificationEmail = async (to: string, code: string): Promise<void> => {
         try {
                 const mailInfo = {
                         from: '"Viniland" vinilandshop@gmail.com',
@@ -18,5 +18,20 @@ export const sendEmail = async (to: string, code: string): Promise<void> => {
                 console.log(`Correo enviado a ${to}`);
         } catch (error) {
                 console.error("Error al enviar el correo de verificación", error);
+        }
+}
+
+export const sendConfirmationEmail = async (to: string): Promise<void> => {
+        try {
+                const mailInfo = {
+                        from: '"Viniland" vinilandshop@gmail.com',
+                        to,
+                        subject: "Confirmación de usuario",
+                        text: `Tu usuario fue verificado correctamente. ¡Bienvenido a Viniland!`
+                }
+                await transporter.sendMail(mailInfo);
+                console.log(`Correo enviado a ${to}`);
+        } catch (error) {
+                console.error("Error al enviar el correo de confirmación", error);
         }
 }
