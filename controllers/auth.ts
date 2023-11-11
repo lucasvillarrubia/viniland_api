@@ -12,11 +12,9 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
         const salt = bcryptjs.genSaltSync();
         const adminKey = req.headers['admin-key'];
         const verificationCode = randomstring.generate(6);
-
         user.password = bcryptjs.hashSync(password, salt);
         user.code = verificationCode;
         if (adminKey === process.env.ADMIN_KEY) { user.role = ROLES.admin }
-
         await user.save();
         await sendVerificationEmail(email, verificationCode);
         res.status(201).json({ user });
